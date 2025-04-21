@@ -1,4 +1,6 @@
+import React from "react";
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import CountryCard from "../components/CountryCard";
 
 const mock = {
@@ -11,8 +13,13 @@ const mock = {
 };
 
 test("renders country card with data", () => {
-  render(<CountryCard country={mock} />);
+  render(
+    <MemoryRouter>
+      <CountryCard country={mock} />
+    </MemoryRouter>
+  );
   expect(screen.getByText("Testland")).toBeInTheDocument();
   expect(screen.getByText(/123,456/)).toBeInTheDocument();
   expect(screen.getByText(/TestRegion/)).toBeInTheDocument();
+  expect(screen.getByText(/TestCity/)).toBeInTheDocument();
 });

@@ -1,10 +1,14 @@
+import React from "react";
 import { render, screen } from "@testing-library/react";
 import Home from "../pages/Home";
 import * as api from "../api/restCountries";
 
 jest.spyOn(api, "getAll").mockResolvedValue({ data: [] });
 
-test("renders search input", async () => {
+test("renders search input after loading", async () => {
   render(<Home />);
-  expect(screen.getByPlaceholderText(/search by name/i)).toBeInTheDocument();
+  // findByPlaceholderText waits for loading → finished state
+  expect(
+    await screen.findByPlaceholderText(/search by name/i)
+  ).toBeInTheDocument();
 });
