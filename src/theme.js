@@ -4,6 +4,7 @@ const theme = createTheme({
   palette: {
     primary: { main: "#1976d2" },    // deep blue
     secondary: { main: "#f50057" },  // pink accent
+    common: { main: "#AFDDFF" },  // light blue
   },
   typography: {
     fontFamily: "'Inter', sans-serif",

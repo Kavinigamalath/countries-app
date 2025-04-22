@@ -3,3 +3,20 @@
 @tailwind utilities;
 
 /* you can add custom overrides here */
+
+/* Ensure the page and root div fill the viewport */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+/* Full‑page background */
+body {
+  background-image: url('/background.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  /* Optional: keep it fixed during scroll */
+  background-attachment: fixed;
+}
+
