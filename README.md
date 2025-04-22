@@ -5,6 +5,13 @@
 # REST Countries App
 
 A React frontend application consuming the [REST Countries API](https://restcountries.com/), built as part of SE3040 – Application Frameworks (Assignment 02) at SLIIT.
+## Live Demo
+
+This app is deployed on Cloudflare Pages:
+
+👉 [https://countries-app-ahb.pages.dev](https://countries-app-ahb.pages.dev)
+
+_Deployed via Cloudflare Pages (connected to GitHub)_  
 
 ---
 
@@ -109,6 +116,14 @@ You can deploy this app using platforms like [Netlify](https://www.netlify.com/)
 - **Publish Directory**: `dist/`
 
 Once deployed, your site will be available at the URL provided by your hosting service.
+
+## Live Demo
+
+This app is deployed on Cloudflare Pages:
+
+👉 [https://countries-app-ahb.pages.dev](https://countries-app-ahb.pages.dev)
+
+_Deployed via Cloudflare Pages (connected to GitHub)_  
 ---
 
 ## Brief Report
