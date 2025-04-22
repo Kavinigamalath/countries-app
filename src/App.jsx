@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import CountryDetail from "./pages/CountryDetail";
 import Login from "./pages/Login";
 import Favorites from "./pages/Favorites";
+import Footer from "./components/Footer";
 
 export default function App() {
   return (
@@ -21,6 +22,10 @@ export default function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
+    
+         {/* FOOTER */}
+         <Footer />
+       
       </div>
     </AuthProvider>
   );
