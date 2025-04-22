@@ -45,8 +45,8 @@ const SECTIONS = [
 ];
 
 const SOCIAL_LINKS = [
-  { icon: GitHubIcon, label: "GitHub", href: "https://github.com/YourUsername" },
-  { icon: LinkedInIcon, label: "LinkedIn", href: "https://linkedin.com/in/YourProfile" },
+  { icon: GitHubIcon, label: "GitHub", href: "https://github.com/kavinigamalath" },
+  { icon: LinkedInIcon, label: "LinkedIn", href: "https://linkedin.com/in/kavinigamalath" },
   { icon: TwitterIcon, label: "Twitter", href: "#" },
   { icon: FacebookIcon, label: "Facebook", href: "#" },
   { icon: InstagramIcon, label: "Instagram", href: "#" },
@@ -80,7 +80,7 @@ export default function Footer() {
           {/* About Section */}
           <Grid item xs={12} md={3}>
             <Typography variant="h6" gutterBottom sx={{ fontWeight: 700 }}>
-              Countries Explorer
+              Country Explorer
             </Typography>
             <Typography variant="body2" sx={{ opacity: 0.8 }}>
               A high‑performance React SPA built with Vite and Material‑UI, fully
