@@ -94,77 +94,106 @@ export default function Home() {
   return (
     <Box sx={{ minHeight: "100vh", bgcolor: "transparent" }}>
 
-     {/* Hero Banner */}
-<Box
-  sx={{
-    width: "100%",
-    mx: { xs: 0, sm: 2, md: 3 },
-    mt: { xs: 2, sm: 3, md: 4 },
-    mb: { xs: 3, sm: 4, md: 5 },
-    px: { xs: 2, sm: 4 },
-    py: { xs: 4, sm: 6 },
-    borderRadius: 3,
-    overflow: "hidden",
-    background: `linear-gradient(135deg, ${theme.palette.primary.main}CC, ${theme.palette.primary.main}CC)`,
-    color: "#FFF",
-    textAlign: "center",
-  }}
->
-  <Typography
-    variant="h2"
-    fontWeight={800}
-    sx={{
-      fontSize: { xs: "1.5rem", sm: "2.25rem", md: "2.75rem" },
-      textShadow: "1px 1px 4px rgba(0,0,0,0.4)",
-    }}
-  >
-    Country Explorer
-  </Typography>
+    {/* Hero Banner */}
+   
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
 
-  <Box
-    sx={{
-      display: "grid",
-      gridTemplateColumns: {
-        xs: "repeat(2, 1fr)",
-        sm: "repeat(5, 1fr)",
-      },
-      gap: 2,
-      mt: 3,
-      maxWidth: 800,
-      mx: "auto",
-    }}
-  >
-    {[
-      ["Countries", all?.length || 0],
-      ["Regions", regions.length],
-      ["Subregions", subregions.length],
-      ["Languages", languages.length],
-      [
-        "Population",
-        all
-          ? all.reduce((sum, c) => sum + (c.population || 0), 0).toLocaleString()
-          : 0,
-      ],
-    ].map(([label, value], i) => (
+        // ensure it always fills the screen
+        minHeight: "50vh",
+        width: "100%",
+
+        // add some horizontal padding on mobile
+        px: { xs: 2, sm: 4 },
+      }}
+    >
+      {/* ▶ hero card */}
       <Box
-        key={i}
         sx={{
-          background: "rgba(255,255,255,0.2)",
-          backdropFilter: "blur(6px)",
-          borderRadius: 2,
-          p: 2,
+          width: "100%",
+          maxWidth: 900,               // constrain on wide screens
+          borderRadius: 3,
+          overflow: "hidden",
+
+          // vertical spacing
+          mt: { xs: 2, sm: 3, md: 4 },
+          mb: { xs: 3, sm: 4, md: 5 },
+
+          // padding inside the card
+          px: { xs: 2, sm: 4 },
+          py: { xs: 4, sm: 6 },
+
+          // gradient background
+          background: `linear-gradient(
+            135deg,
+            ${theme.palette.primary.main}CC,
+            ${theme.palette.primary.main}CC
+          )`,
+          color: "#FFF",
+          textAlign: "center",
         }}
       >
-        <Typography variant="h6" fontWeight={700}>
-          {value}
+        <Typography
+          variant="h2"
+          fontWeight={800}
+          sx={{
+            fontSize: { xs: "1.5rem", sm: "2.25rem", md: "2.75rem" },
+            textShadow: "1px 1px 4px rgba(0,0,0,0.4)",
+          }}
+        >
+          Country Explorer
         </Typography>
-        <Typography variant="caption" sx={{ opacity: 0.85 }}>
-          {label}
-        </Typography>
+
+        <Box
+          sx={{
+            display: "grid",
+            gap: 2,
+            mt: 3,
+
+            // 2-column on xs, 5-column on sm+
+            gridTemplateColumns: {
+              xs: "repeat(2, 1fr)",
+              sm: "repeat(5, 1fr)",
+            },
+          }}
+        >
+          {[
+            ["Countries", all?.length || 0],
+            ["Regions", regions.length],
+            ["Subregions", subregions.length],
+            ["Languages", languages.length],
+            [
+              "Population",
+              all
+                ? all
+                    .reduce((sum, c) => sum + (c.population || 0), 0)
+                    .toLocaleString()
+                : 0,
+            ],
+          ].map(([label, value], i) => (
+            <Box
+              key={i}
+              sx={{
+                background: "rgba(255,255,255,0.2)",
+                backdropFilter: "blur(6px)",
+                borderRadius: 2,
+                p: 2,
+              }}
+            >
+              <Typography variant="h6" fontWeight={700}>
+                {value}
+              </Typography>
+              <Typography variant="caption" sx={{ opacity: 0.85 }}>
+                {label}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
       </Box>
-    ))}
-  </Box>
-</Box>
+    </Box>
 
       {/* Services Title */}
       <Typography
