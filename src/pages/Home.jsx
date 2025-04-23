@@ -101,9 +101,9 @@ export default function Home() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-
+//------------------------------------------can chnge this to make the hero card smaller or larger
         // ensure it always fills the screen
-        minHeight: "50vh",
+        minHeight: "100vh",
         width: "100%",
 
         // add some horizontal padding on mobile
