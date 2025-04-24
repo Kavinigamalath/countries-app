@@ -22,7 +22,7 @@ import {
   Instagram as InstagramIcon
 } from "@mui/icons-material";
 
-// Data-driven link arrays
+// Define two arrays of link data: one for main sections, one for social icons
 const SECTIONS = [
   {
     title: "Quick Links",
@@ -36,9 +36,9 @@ const SECTIONS = [
   {
     title: "Resources",
     links: [
-      { label: "REST Countries API", href: "https://restcountries.com" },
+      { label: "REST Countries API", href: "https://restcountries.com" },
       { label: "Source Code", href: "https://github.com/YourUsername/countries-app" },
-      { label: "Material‑UI Docs", href: "https://mui.com/" },
+      { label: "Material-UI Docs", href: "https://mui.com/" },
       { label: "Tailwind CSS", href: "https://tailwindcss.com/" },
     ],
   },
@@ -53,17 +53,24 @@ const SOCIAL_LINKS = [
 ];
 
 export default function Footer() {
+  // grab theme object for consistent styling
   const theme = useTheme();
+
+  // local state for email input and subscription flag
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
+  // basic email validation: if valid, show thank-you message
   const handleSubscribe = () => {
     if (/\S+@\S+\.\S+/.test(email)) setSubscribed(true);
   };
+
+  // smooth scroll back to top
   const handleScrollTop = () =>
     window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
+    // semantic footer element, with gradient background
     <Box
       component="footer"
       role="contentinfo"
@@ -79,30 +86,17 @@ export default function Footer() {
         <Grid container spacing={6}>
           {/* About Section */}
           <Grid item xs={12} md={3}>
+            {/* App name and description */}
             <Typography variant="h6" gutterBottom sx={{ fontWeight: 700 }}>
               Country Explorer
             </Typography>
             <Typography variant="body2" sx={{ opacity: 0.8 }}>
-              A high‑performance React SPA built with Vite and Material‑UI, fully
-              integrated with the REST Countries API. Features:
+              A high-performance React SPA built with Vite and Material-UI, fully
+              integrated with the REST Countries API. Features:
             </Typography>
-            {/* <Box component="ul" sx={{ pl: 2, mt: 1, mb: 0 }}>
-              {[
-                "Instant Autocomplete search",
-                "Region & language filters",
-                "Pagination + Masonry layout",
-                "Session-based authentication",
-                "Unit & integration tests",
-                "Zero‑downtime Cloudflare Pages deployment",
-              ].map((item, i) => (
-                <Box component="li" key={i} sx={{ fontSize: "0.875rem", lineHeight: 1.4 }}>
-                  {item}
-                </Box>
-              ))}
-            </Box> */}
           </Grid>
 
-          {/* Dynamic Link Sections */}
+          {/* Map over SECTIONS to render link columns */}
           {SECTIONS.map((section, i) => (
             <Grid item xs={12} sm={6} md={3} key={i}>
               <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 600 }}>
@@ -124,12 +118,13 @@ export default function Footer() {
             </Grid>
           ))}
 
-          {/* Newsletter & Social */}
+          {/* Newsletter signup & social icons */}
           <Grid item xs={12} md={3}>
             <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 600 }}>
               Stay Updated
             </Typography>
 
+            {/* Toggle between input form and thank-you text */}
             {subscribed ? (
               <Typography>🎉 Thanks for subscribing!</Typography>
             ) : (
@@ -159,6 +154,7 @@ export default function Footer() {
               </Box>
             )}
 
+            {/* Render social media buttons */}
             <Box sx={{ display: "flex", gap: 1 }}>
               {SOCIAL_LINKS.map(({ icon: Icon, label, href }) => (
                 <IconButton
@@ -180,10 +176,10 @@ export default function Footer() {
           </Grid>
         </Grid>
 
-        {/* Divider */}
+        {/* Divider before legal section */}
         <Divider sx={{ my: 4, borderColor: theme.palette.primary.light }} />
 
-        {/* Legal & Back‑to‑Top */}
+        {/* Legal links and back-to-top */}
         <Box
           sx={{
             display: "flex",
@@ -203,6 +199,7 @@ export default function Footer() {
             </Link>
           </Typography>
 
+          {/* Scroll-to-top button */}
           <IconButton
             onClick={handleScrollTop}
             aria-label="Back to top"

@@ -1,25 +1,45 @@
-// src/__mocks__/react-router-dom.js
 import React from "react";
 
-// A no‑op Router that just renders its children
-export const MemoryRouter = ({ children }) => <>{children}</>;
+// No-op (stub) router components/hooks for testing purposes:
+// These implementations let you render components that expect
+// react-router APIs without pulling in the real router.
 
-// Stubbed Link → renders a plain <a>
-export const Link = ({ to, children, ...props }) =>
+export const MemoryRouter = ({ children }) => 
+  // Simply render children as-is, ignoring any routing logic
+  <>{children}</>;
+
+export const BrowserRouter = 
+  // Alias BrowserRouter to MemoryRouter so components importing either work
+  MemoryRouter;
+
+export const Routes  = ({ children }) => 
+  // Render all Route children without interpreting path matching
+  <>{children}</>;
+
+export const Route   = ({ element }) => 
+  // Return the provided element directly, bypassing any route checks
+  element;
+
+export const Link    = ({ to, children, ...props }) => 
+  // Render a plain <a> tag with href set to "to" for link navigation
   <a href={to} {...props}>{children}</a>;
 
-// Stubbed Navigate → renders nothing
-export const Navigate = () => null;
+export const Navigate = () => 
+  // Stub redirect component—renders nothing (null)
+  null;
 
-// Stubbed hooks
-export const useNavigate = () => () => {};
-export const useParams   = () => ({});
-export const useLocation = () => ({});
-export const useMatch    = () => null;
+export const useNavigate = () => 
+  // Hook that returns a no-op function, ignoring navigation calls
+  () => {};
 
-// Stubbed Routes/Route so they just inline their element
-export const Routes = ({ children }) => <>{children}</>;
-export const Route  = ({ element })    => element;
+export const useParams   = () => 
+  // Hook that returns an empty object, simulating no route params
+  ({});
 
-// BrowserRouter as a no‑op too
-export const BrowserRouter = MemoryRouter;
+export const useLocation = () => 
+  // Hook that returns an empty object, simulating no location data
+  ({});
+
+export const useMatch    = () => 
+  // Hook that returns null, simulating no matching route
+  null;

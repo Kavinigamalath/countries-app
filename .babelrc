@@ -3,13 +3,13 @@
     [
       "@babel/preset-env",
       {
-        "targets": { "node": "current" }
+        "targets": { "node": "current" } // Only compile syntax needed for the version of Node running your tests
       }
     ],
     [
       "@babel/preset-react",
       {
-        "runtime": "automatic"
+        "runtime": "automatic"// Enable the new JSX transform so you don’t need to import React in every file
       }
     ]
   ]
