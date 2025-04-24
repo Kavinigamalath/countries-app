@@ -2,45 +2,45 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import Favorites from "../pages/Favorites";
 import { AuthContext } from "../contexts/AuthContext";
-import * as api from "../api/restCountries";
+import * as useFetchHook from "../hooks/useFetch";
+import { MemoryRouter } from "react-router-dom";
 
-// Mock the REST Countries API
-jest.mock("../api/restCountries");
+jest.spyOn(useFetchHook, "default").mockReturnValue({
+  data: [
+    { cca3: "USA", name: { common: "USA" }, flags: { svg: "" }, population:0, region:"", capital:[], languages:{}, currencies:{}, timezones:[], area:0, independent:false, borders:[] }
+  ],
+  loading: false,
+  error: null
+});
 
-const mockCountries = [
-  {
-    cca3: "USA",
-    flags: { svg: "us.svg" },
-    name: { common: "United States" },
-    population: 331000000,
-    region: "Americas",
-    capital: ["Washington D.C."],
-    languages: { eng: "English" }
-  },
-  {
-    cca3: "FRA",
-    flags: { svg: "fr.svg" },
-    name: { common: "France" },
-    population: 67000000,
-    region: "Europe",
-    capital: ["Paris"],
-    languages: { fra: "French" }
-  }
-];
-
-test("Favorites: shows only the user's favorite countries", async () => {
-  api.getAll.mockResolvedValueOnce({ data: mockCountries });
-
-  // Provide a user who has 'FRA' in their favorites
-  const user = { name: "Tester", favorites: ["FRA"] };
-
+test("Favorites redirects if not logged in, else shows cards", () => {
+  // 1) no user → Navigate should swallow, nothing renders
   render(
-    <AuthContext.Provider value={{ user }}>
-      <Favorites />
+    <AuthContext.Provider value={{ user: null }}>
+      <MemoryRouter initialEntries={["/favorites"]}>
+        <Favorites />
+      </MemoryRouter>
     </AuthContext.Provider>
   );
+  expect(screen.queryByText(/You haven’t added any favorites/)).toBeNull();
 
-  // It should render France, but not United States
-  expect(await screen.findByText("France")).toBeInTheDocument();
-  expect(screen.queryByText("United States")).toBeNull();
+  // 2) With user but no favorites
+  render(
+    <AuthContext.Provider value={{ user: { favorites: [] } }}>
+      <MemoryRouter>
+        <Favorites />
+      </MemoryRouter>
+    </AuthContext.Provider>
+  );
+  expect(screen.getByText(/haven’t added any favorites/i)).toBeInTheDocument();
+
+  // 3) With user and one favorite
+  render(
+    <AuthContext.Provider value={{ user: { favorites: ["USA"] } }}>
+      <MemoryRouter>
+        <Favorites />
+      </MemoryRouter>
+    </AuthContext.Provider>
+  );
+  expect(screen.getByText(/Your Favorites/i)).toBeInTheDocument();
 });

@@ -1,3 +1,14 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+/* Import Tailwind’s base layer:
+   - Includes a CSS reset (Preflight) and base element styles
+   - Provides sensible defaults for typography, forms, and more */
+   @import "tailwindcss/base";
+
+   /* Import Tailwind’s component layer:
+      - Contains pre-built component classes (e.g., .container, .prose)
+      - Allows you to use and customize higher-level UI building blocks */
+   @import "tailwindcss/components";
+   
+   /* Import Tailwind’s utility layer:
+      - Brings in all of Tailwind’s low-level utility classes
+      - Enables atomic styling for margins, padding, colors, flex, grid, and more */
+   @import "tailwindcss/utilities";

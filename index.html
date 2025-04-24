@@ -1,13 +1,32 @@
 <!DOCTYPE html>
+<!-- Declare the document as HTML5 -->
 <html lang="en">
 <head>
+  <!-- Set the character encoding to UTF-8 for international character support -->
   <meta charset="UTF-8" />
+
+  <!-- Specify the favicon that appears in browser tabs -->
   <link rel="icon" href="/favicon.ico" />
+
+  <!-- Ensure responsive scaling on mobile devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Text shown in the browser tab -->
   <title>REST Countries App</title>
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body style="
+    margin: 0;  
+    height: 100vh;  
+    /* white overlay at 40% opacity above the image */
+    background: 
+      linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)),
+      url('/src/assets/background.jpg') no-repeat center center fixed;
+    background-size: cover;  
+  ">
+  <!-- React will hook into this div to render the entire app -->
   <div id="root"></div>
+
+  <!-- Load the main entry point of the React application as an ES module -->
   <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>

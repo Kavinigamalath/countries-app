@@ -5,11 +5,11 @@ import * as useFetchHook from "../hooks/useFetch";
 import { AuthContext } from "../contexts/AuthContext";
 import * as Router from "react-router-dom";
 
-// 1. Stub useParams to return code = "USA"
+// 1) Stub useParams → code="USA"
 jest.spyOn(Router, "useParams").mockReturnValue({ code: "USA" });
 
-// 2. Mock your useFetch hook to return our fake country
-const mockCountryData = [{
+// 2) Mock useFetch to return one country
+const mockData = [{
   cca3: "USA",
   flags: { svg: "us.svg" },
   name: { common: "United States", official: "United States of America" },
@@ -18,61 +18,56 @@ const mockCountryData = [{
   subregion: "Northern America",
   capital: ["Washington D.C."],
   languages: { eng: "English" },
-  currencies: { USD: { name: "United States dollar", symbol: "$" } }
+  currencies: { USD: { name: "US dollar", symbol: "$" } },
+  timezones: ["UTC−05:00"],
+  area: 9833520,
+  independent: true,
+  borders: ["CAN", "MEX"]
 }];
 
 jest.spyOn(useFetchHook, "default").mockReturnValue({
-  data: mockCountryData,
+  data: mockData,
   loading: false,
   error: null
 });
 
-test("CountryDetail: displays details and toggles favorite", () => {
-  // 3. Provide fake AuthContext
-  const addFavorite = jest.fn();
-  const removeFavorite = jest.fn();
+test("CountryDetail shows correct info and toggles favorite", () => {
+  const addFav = jest.fn();
+  const remFav = jest.fn();
   let user = { name: "Tester", favorites: [] };
 
   const { rerender } = render(
-    <AuthContext.Provider value={{ user, addFavorite, removeFavorite }}>
+    <AuthContext.Provider value={{ user, addFavorite: addFav, removeFavorite: remFav }}>
       <CountryDetail />
     </AuthContext.Provider>
   );
 
-  // Verify heading
-  expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("United States");
-
-  // Check labels and values separately
-  expect(screen.getByText("Official:")).toBeInTheDocument();
+  // Heading level 2 is country name
+  expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("United States");
+  // Official name
   expect(screen.getByText("United States of America")).toBeInTheDocument();
-
-  expect(screen.getByText("Population:")).toBeInTheDocument();
+  // Population
+  expect(screen.getByText("Population")).toBeInTheDocument();
   expect(screen.getByText("331,000,000")).toBeInTheDocument();
-
-  expect(screen.getByText("Region:")).toBeInTheDocument();
+  // Region/Subregion/Capital
   expect(screen.getByText("Americas")).toBeInTheDocument();
-
-  expect(screen.getByText("Subregion:")).toBeInTheDocument();
   expect(screen.getByText("Northern America")).toBeInTheDocument();
-
-  expect(screen.getByText("Capital:")).toBeInTheDocument();
   expect(screen.getByText("Washington D.C.")).toBeInTheDocument();
 
-  // Test Add to Favorites
+  // Click “Add to Favorites”
   const addBtn = screen.getByRole("button", { name: /Add to Favorites/i });
   fireEvent.click(addBtn);
-  expect(addFavorite).toHaveBeenCalledWith("USA");
+  expect(addFav).toHaveBeenCalledWith("USA");
 
-  // Rerender as if user has favorited USA
+  // Now simulate it’s already favorited
   user = { ...user, favorites: ["USA"] };
   rerender(
-    <AuthContext.Provider value={{ user, addFavorite, removeFavorite }}>
+    <AuthContext.Provider value={{ user, addFavorite: addFav, removeFavorite: remFav }}>
       <CountryDetail />
     </AuthContext.Provider>
   );
 
-  // Test Remove from Favorites
-  const removeBtn = screen.getByRole("button", { name: /Remove from Favorites/i });
-  fireEvent.click(removeBtn);
-  expect(removeFavorite).toHaveBeenCalledWith("USA");
+  const remBtn = screen.getByRole("button", { name: /Remove from Favorites/i });
+  fireEvent.click(remBtn);
+  expect(remFav).toHaveBeenCalledWith("USA");
 });

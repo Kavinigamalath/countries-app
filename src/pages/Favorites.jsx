@@ -1,45 +1,75 @@
-import React, { useContext, useMemo } from "react";
-import { AuthContext } from "../contexts/AuthContext";
-import { Navigate, Link } from "react-router-dom";
-import useFetch from "../hooks/useFetch";
-import { getAll } from "../api/restCountries";
-import CountryCard from "../components/CountryCard";
+import React, { useContext } from "react";                             // Import React and useContext for accessing context
+import { Navigate, Link } from "react-router-dom";                     // Import Navigate for redirects and Link for in-app navigation
+import { AuthContext } from "../contexts/AuthContext";                 // Import authentication context to get current user
+import useFetch from "../hooks/useFetch";                              // Import custom hook for fetching data
+import { getAll } from "../api/restCountries";                         // Import API call to fetch all countries
+import CountryCard from "../components/CountryCard";                   // Import component to render each country card
+
+// MUI Icons for UI feedback
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";  // Icon for back button
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";    // Icon for empty favorites state
 
 export default function Favorites() {
-  const { user } = useContext(AuthContext);
-  const { data: countries, loading, error } = useFetch(getAll);
+  const { user } = useContext(AuthContext);                            // Get current user from context
+  const { data: countries, loading, error } = useFetch(getAll);        // Fetch all countries data
 
-  // Redirect if not logged in
+  // Redirect to login if no user is authenticated
   if (!user) return <Navigate to="/login" replace />;
 
-  if (loading) return <p>Loading…</p>;
-  if (error)   return <p>Error loading data</p>;
+  // Show loading message while data is being fetched
+  if (loading) return <p className="text-center py-20">Loading…</p>;
 
-  // Filter favorites safely
+  // Show error message if fetch fails
+  if (error)   return <p className="text-center py-20">Error loading data</p>;
+
+  // Filter only those countries that the user has favorited
   const favs = (countries || []).filter(c => user.favorites.includes(c.cca3));
 
   return (
-    <div>
-      {/* Back button */}
-      <Link
-        to="/"
-        className="inline-block mb-4 text-blue-600 hover:underline"
-      >
-        ← Back
-      </Link>
+    <div className="min-h-screen px-4 py-10">                        {/* Full-height container with padding */}
+      <div className="max-w-6xl mx-auto bg-white/60 backdrop-blur-lg rounded-3xl shadow-2xl border border-blue-100 p-8">
+        {/* Back button to return to main explorer */}
+        <Link
+          to="/"                                                        // Navigate back to home
+          className="inline-flex items-center gap-2 mb-8 px-4 py-2 text-blue-700 font-medium border border-blue-300 rounded-full bg-white/70 hover:bg-white/90 transition group focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          <ArrowBackIosNewIcon
+            fontSize="small"
+            className="transition-transform duration-300 group-hover:-translate-x-1"  // Slide icon on hover
+          />
+          <span>Back to Explorer</span>
+        </Link>
 
-      {favs.length === 0 ? (
-        <p className="text-center mt-10">You have no favorite countries yet.</p>
-      ) : (
-        <>
-          <h2 className="text-2xl mb-4">Your Favorites</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {favs.map(c => (
-              <CountryCard key={c.cca3} country={c} />
-            ))}
+        {/* If no favorites, show empty state */}
+        {favs.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <FavoriteBorderIcon className="text-blue-400" style={{ fontSize: 60 }} />  {/* Large icon */}
+            <p className="mt-4 text-xl font-semibold text-gray-700 text-center">
+              You haven’t added any favorites yet                        {/* Informative message */}
+            </p>
+            <p className="text-gray-500 text-center mt-1">
+              Browse countries and tap&nbsp;
+              <span className="text-red-500 font-bold">★</span> to save them here. {/* Hint on how to favorite */}
+            </p>
           </div>
-        </>
-      )}
+        ) : (
+          <>
+            {/* Title for favorites section */}
+            <h2 className="text-3xl justify-items-center gap-8 font-bold text-gray-800 mb-6" align="center">
+              Your Favorites
+            </h2>
+
+            {/* Grid of favorite country cards */}
+            <div className="grid justify-items-center gap-8 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {favs.map(c => (
+                <CountryCard key={c.cca3} country={c} />                // Render each favorite country
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+      
     </div>
+    
   );
 }
