@@ -190,7 +190,7 @@ export default function Footer() {
           }}
         >
           <Typography variant="caption" sx={{ opacity: 0.75 }}>
-            © {new Date().getFullYear()} Countries Explorer. All rights reserved.{" "}
+            © {new Date().getFullYear()} Country Explorer. All rights reserved.{" "}
             <Link href="/privacy" color="inherit" underline="hover" sx={{ mx: 1 }}>
               Privacy Policy
             </Link>
