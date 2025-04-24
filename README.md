@@ -2,7 +2,7 @@
 ### Student Number: IT22190598
 ### Semester: Year 03 Semester 01  (2025)
 
-# REST Countries App
+# REST Countries Application
 
 A React frontend application consuming the [REST Countries API](https://restcountries.com/), built as part of SE3040 – Application Frameworks (Assignment 02) at SLIIT.
 ## Live Demo
