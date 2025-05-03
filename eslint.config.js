@@ -4,16 +4,16 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 
 export default [
-  // ─── Ignore built files ─────────────────────────────────────────────────────
+  // Ignore built files 
   // Skip linting in the "dist" folder, where compiled output lives
   { ignores: ['dist'] },
 
   {
-    // ─── File targeting ─────────────────────────────────────────────────────────
+    //File targeting
     // Apply these settings to all JavaScript and JSX files in the project
     files: ['**/*.{js,jsx}'],
 
-    // ─── Language/parsing options ───────────────────────────────────────────────
+    // Language/parsing options
     languageOptions: {
       ecmaVersion: 2020,              // allow syntax up through ES2020
       globals: globals.browser,       // define standard browser globals (window, document, etc.)
@@ -24,13 +24,13 @@ export default [
       },
     },
 
-    // ─── Plugins ────────────────────────────────────────────────────────────────
+    // Plugins 
     plugins: {
       'react-hooks': reactHooks,           // enforces the rules of React Hooks
       'react-refresh': reactRefresh,       // integrates with React Fast Refresh
     },
 
-    // ─── Rules ─────────────────────────────────────────────────────────────────
+    // Rules 
     rules: {
       // Include all the recommended core ESLint rules
       ...js.configs.recommended.rules,

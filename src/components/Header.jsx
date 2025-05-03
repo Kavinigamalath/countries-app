@@ -1,6 +1,4 @@
-// src/components/Header.jsx
-
-// Import React and hooks
+// Header component for the application
 import React, { useContext, useState } from "react";
 
 // Import authentication context
@@ -11,46 +9,44 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 // Import Material-UI components
 import {
-  AppBar,        // Top navigation bar
-  Toolbar,       // Container for items inside AppBar
-  Typography,    // Text component
-  IconButton,    // Button for icons
-  Button,        // Regular button
-  Avatar,        // User avatar
-  Menu,          // Dropdown menu
-  MenuItem,      // Individual menu item
-  Box,           // Generic container component
-  Tooltip,       // Hover tooltip
-  Drawer,        // Slide-in panel
-  List,          // List container
-  ListItemButton,// Clickable list item
-  ListItemIcon,  // Icon in list item
-  ListItemText,  // Text in list item
-  Container,     // Centers content with fixed width
-  Divider,       // Horizontal divider line
-  useTheme,      // Hook to access theme
-  alpha,         // Utility to set transparency
+  AppBar,        
+  Toolbar,       
+  Typography,    
+  IconButton,    
+  Button,        
+  Avatar,        
+  Menu,          
+  MenuItem,      
+  Box,           
+  Tooltip,       
+  Drawer,        
+  List,          
+  ListItemButton,
+  ListItemIcon,  
+  ListItemText,  
+  Container,     
+  Divider,       
+  useTheme,      
+  alpha,         
 } from "@mui/material";
 
 // Import icons
-import MenuIcon from "@mui/icons-material/Menu";          // Hamburger icon
-import HomeIcon from "@mui/icons-material/Home";          // Home icon
-import FavoriteIcon from "@mui/icons-material/Favorite";  // Favorite icon
-import LogoutIcon from "@mui/icons-material/Logout";      // Logout icon
-import LoginIcon from "@mui/icons-material/Login";        // Login icon
+import MenuIcon from "@mui/icons-material/Menu";          
+import HomeIcon from "@mui/icons-material/Home";          
+import FavoriteIcon from "@mui/icons-material/Favorite";  
+import LogoutIcon from "@mui/icons-material/Logout";      
+import LoginIcon from "@mui/icons-material/Login";        
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 // Import logo image
-import logo from "../assets/logo.png";  // <-- your logo file
+import logo from "../assets/logo.png";  
 
-// Define Header component
+// Header component for the application
 export default function Header() {
+
   // Get user and logout function from context
   const { user, logout } = useContext(AuthContext);
-
-  // Hook to navigate programmatically
   const navigate = useNavigate();
-
-  // Access theme for colors
   const theme = useTheme();
 
   // State for mobile drawer open/close
@@ -61,23 +57,23 @@ export default function Header() {
 
   // State and handlers for avatar menu
   const [anchorEl, setAnchorEl] = useState(null);        // Anchor element of menu
-  const openAvatarMenu = e => setAnchorEl(e.currentTarget); // Open menu at clicked avatar
-  const closeAvatarMenu = () => setAnchorEl(null);          // Close the avatar menu
+  const openAvatarMenu = e => setAnchorEl(e.currentTarget); 
+  const closeAvatarMenu = () => setAnchorEl(null);          
 
   // Handle user logout
   const handleLogout = () => {
-    closeAvatarMenu();       // Close the avatar menu
-    logout();                // Call logout from context
-    navigate("/");           // Redirect to home
+    closeAvatarMenu();       
+    logout();                
+    navigate("/");           
   };
 
   // Define the mobile drawer content
   const drawer = (
     <Box
-      sx={{ width: 260 }}  // Set width of drawer
+      sx={{ width: 260 }}  
       role="presentation"
-      onClick={toggleMobile}  // Close drawer when clicking inside
-      onKeyDown={toggleMobile} // Close drawer on key events
+      onClick={toggleMobile}  
+      onKeyDown={toggleMobile} 
     >
       {/* Logo and title inside the drawer */}
       <Box sx={{ display: "flex", alignItems: "center", p: 2 }}>
@@ -113,6 +109,7 @@ export default function Header() {
             <ListItemText primary="Logout" />
           </ListItemButton>
         ) : (
+          // Login button when not authenticated
           <ListItemButton onClick={() => navigate("/login")}>
             <ListItemIcon><LoginIcon /></ListItemIcon>
             <ListItemText primary="Login" />
@@ -175,7 +172,7 @@ export default function Header() {
                   height: { xs: 28, sm: 36, md: 44 }, // Responsive height
                   width: "auto",
                   mr: 1.5,                             // Right margin
-                  borderRadius: "8px",                // <-- rounded corners
+                  borderRadius: "8px",                
                 }}
               />
               <Box>
@@ -261,7 +258,15 @@ export default function Header() {
                     <MenuItem onClick={handleLogout}>
                       <LogoutIcon fontSize="small" sx={{ mr: 1 }} /> Logout
                     </MenuItem>
+        
+                    {/* Menu item: Delete Account */}
+                    <MenuItem component={RouterLink} to="/delete-account" onClick={closeAvatarMenu}
+                      sx={{ color: "error.main" }}
+                    >
+                      <DeleteOutlineIcon fontSize="small" sx={{ mr: 1 }} /> Delete Account
+                    </MenuItem>
                   </Menu>
+
                 </>
               ) : (
                 // Login button when not authenticated

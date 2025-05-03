@@ -1,34 +1,36 @@
-import React, { useContext } from "react";                                    // Import React and context hook
-import { useParams, Link } from "react-router-dom";                           // useParams for URL params, Link for navigation
-import useFetch from "../hooks/useFetch";                                      // Custom hook to fetch data
-import { getByCode } from "../api/restCountries";                              // API call to fetch country by code
-import { AuthContext } from "../contexts/AuthContext";                        // Authentication context for user data
+import React, { useContext } from "react";                                    
+import { useParams, Link } from "react-router-dom";                          
+import useFetch from "../hooks/useFetch";                                      
+import { getByCode } from "../api/restCountries";                              
+import { AuthContext } from "../contexts/AuthContext";                        
 
 // MUI Icons for various stats and actions
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";          // Back arrow icon
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";                      // Population icon
-import PublicIcon from "@mui/icons-material/Public";                            // Region icon
-import ExploreIcon from "@mui/icons-material/Explore";                          // Subregion icon
-import LocationCityIcon from "@mui/icons-material/LocationCity";                // Capital icon
-import LanguageIcon from "@mui/icons-material/Language";                        // Languages icon
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";                  // Currencies icon
-import AccessTimeIcon from "@mui/icons-material/AccessTime";                    // Timezones icon
-import MapIcon from "@mui/icons-material/Map";                                  // Area icon
-import FlagIcon from "@mui/icons-material/Flag";                                // Independent icon
-import BorderAllIcon from "@mui/icons-material/BorderAll";                      // Borders icon
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";          
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";                      
+import PublicIcon from "@mui/icons-material/Public";                            
+import ExploreIcon from "@mui/icons-material/Explore";                          
+import LocationCityIcon from "@mui/icons-material/LocationCity";                
+import LanguageIcon from "@mui/icons-material/Language";                        
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";                  
+import AccessTimeIcon from "@mui/icons-material/AccessTime";                    
+import MapIcon from "@mui/icons-material/Map";                                  
+import FlagIcon from "@mui/icons-material/Flag";                                
+import BorderAllIcon from "@mui/icons-material/BorderAll";
 
+
+// Main component for displaying country details
 export default function CountryDetail() {
-  const { code } = useParams();                                                // Extract the country code from URL
-  const { data, loading, error } = useFetch(getByCode, code);                  // Fetch data for this country
-  const { user, addFavorite, removeFavorite } = useContext(AuthContext);       // Get user and favorites handlers
+  const { code } = useParams();                                                
+  const { data, loading, error } = useFetch(getByCode, code);                  
+  const { user, addFavorite, removeFavorite } = useContext(AuthContext);       
 
   // Show loading state while fetching
   if (loading) return <p className="text-center text-lg py-20">Loading…</p>;
   // Show error if fetch fails or no country found
   if (error || !data?.[0]) return <p className="text-center text-lg py-20">Country not found</p>;
 
-  const country = data[0];                                                      // Grab the country object
-  const isFav = user?.favorites.includes(code);                                 // Check if user has favorited this country
+  const country = data[0];                                                      
+  const isFav = user?.favorites.includes(code);                              
 
   // Destructure required fields for display
   const {
@@ -91,12 +93,12 @@ export default function CountryDetail() {
           {/* Favorite toggle button, shown only if user logged in */}
           {user && (
             <button
-              onClick={() => (isFav ? removeFavorite(code) : addFavorite(code))} // Toggle favorite on click
+              onClick={() => (isFav ? removeFavorite(code) : addFavorite(code))} 
               className={`w-full py-3 rounded-lg text-lg font-semibold shadow focus:outline-none focus:ring-2 focus:ring-offset-2 transition
                 ${
                   isFav
-                    ? "bg-red-500 hover:bg-red-600 text-white focus:ring-red-300" // Styles when already a favorite
-                    : "bg-blue-500 hover:bg-blue-700 text-white focus:ring-blue-300" // Styles when not a favorite
+                    ? "bg-red-500 hover:bg-red-600 text-white focus:ring-red-300" 
+                    : "bg-blue-500 hover:bg-blue-700 text-white focus:ring-blue-300" 
                 }`}
             >
               {isFav ? "★ Remove from Favorites" : "☆ Add to Favorites"}         {/* Button label */}
@@ -106,6 +108,7 @@ export default function CountryDetail() {
 
         {/* Right section: detailed stats */}
         <section className="space-y-6 animate-slide-up">
+
           {/* Each StatItem displays an icon, label, and value */}
           <StatItem icon={<PeopleAltIcon />} label="Population" value={population.toLocaleString()} />
           <StatItem icon={<PublicIcon />} label="Region" value={region} />
@@ -114,8 +117,11 @@ export default function CountryDetail() {
           <StatItem
             icon={<LanguageIcon />}
             label="Languages"
+            // Join language names into a single string, or show "—" if none
             value={Object.values(languages || {}).join(", ") || "—"}
           />
+
+          {/* Currencies: map over currency objects to get name and symbol */}
           <StatItem
             icon={<AttachMoneyIcon />}
             label="Currencies"
@@ -125,6 +131,8 @@ export default function CountryDetail() {
                 .join(", ") || "—"
             }
           />
+
+          {/* Timezones, area, independence status, and borders */}
           <StatItem icon={<AccessTimeIcon />} label="Timezones" value={timezones?.join(", ") || "—"} />
           <StatItem icon={<MapIcon />} label="Area" value={`${area?.toLocaleString()} km²`} />
           <StatItem icon={<FlagIcon />} label="Independent" value={independent ? "Yes" : "No"} />
@@ -135,7 +143,7 @@ export default function CountryDetail() {
   );
 }
 
-/* -------------------------------------- */
+
 // StatItem subcomponent renders individual statistic rows
 function StatItem({ icon, label, value }) {
   return (

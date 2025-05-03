@@ -5,10 +5,13 @@ import * as useFetchHook from "../hooks/useFetch";
 import { AuthContext } from "../contexts/AuthContext";
 import * as Router from "react-router-dom";
 
-// 1) Stub useParams → code="USA"
+// Mocking the Firebase module to prevent actual API calls
+jest.mock("../firebase");
+
+// Stub useParams code="USA"
 jest.spyOn(Router, "useParams").mockReturnValue({ code: "USA" });
 
-// 2) Mock useFetch to return one country
+// Mock useFetch to return one country
 const mockData = [{
   cca3: "USA",
   flags: { svg: "us.svg" },
@@ -25,12 +28,14 @@ const mockData = [{
   borders: ["CAN", "MEX"]
 }];
 
+// Mocking the useFetch hook to return the mock data
 jest.spyOn(useFetchHook, "default").mockReturnValue({
   data: mockData,
   loading: false,
   error: null
 });
 
+// Mocking the AuthContext to provide user and favorite management functions
 test("CountryDetail shows correct info and toggles favorite", () => {
   const addFav = jest.fn();
   const remFav = jest.fn();
@@ -62,11 +67,14 @@ test("CountryDetail shows correct info and toggles favorite", () => {
   // Now simulate it’s already favorited
   user = { ...user, favorites: ["USA"] };
   rerender(
+
+    // Re-render with updated user context
     <AuthContext.Provider value={{ user, addFavorite: addFav, removeFavorite: remFav }}>
       <CountryDetail />
     </AuthContext.Provider>
   );
 
+  // Check that the button now says "Remove from Favorites"
   const remBtn = screen.getByRole("button", { name: /Remove from Favorites/i });
   fireEvent.click(remBtn);
   expect(remFav).toHaveBeenCalledWith("USA");

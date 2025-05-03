@@ -1,10 +1,16 @@
-// src/tests/App.integration.test.jsx
+//Mock the Firebase Auth module to prevent real authentication calls during testing.
+jest.mock("firebase/auth");
+
+// Mocking the Firebase module to prevent actual API calls
+jest.mock("../firebase");
+
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 
-// ─── 1) Mock out static assets ───────────────────────────────────────────
+
+//Mock out static assets 
 jest.mock("../assets/logo.png",              () => "logo.png");
 jest.mock("../assets/services/service1.png", () => "s1.png");
 jest.mock("../assets/services/service2.png", () => "s2.png");
@@ -12,7 +18,18 @@ jest.mock("../assets/services/service3.png", () => "s3.png");
 jest.mock("../assets/services/service4.png", () => "s4.png");
 jest.mock("../assets/services/service5.png", () => "s5.png");
 
-// ─── 2) Stub heavy child components ───────────────────────────────────────
+// Stub heavy child components to speed up tests
+
+jest.mock("../firebase", () => ({
+  auth: {},
+  provider: {},
+  db: {},
+  onAuthStateChanged: (auth, callback) => {
+    callback(null); // simulate no user
+    return () => {}; // mock unsubscribe
+  },
+}));
+
 jest.mock(
   "../components/SpotlightCarousel",
   () => ({ __esModule: true, default: () => <div data-testid="carousel" /> })
@@ -33,7 +50,7 @@ jest.mock(
   })
 );
 
-// ─── 3) Spy on useFetch ──────────────────────────────────────────────────
+// Spy on useFetch to return a specific value
 import * as useFetchHook from "../hooks/useFetch";
 import App from "../App";
 
@@ -60,7 +77,7 @@ afterAll(() => {
   jest.restoreAllMocks();
 });
 
-// ─── 4) Silence only MUI Grid legacy props warnings ─────────────────────
+// Silence only MUI Grid legacy props warnings
 beforeAll(() => {
   jest.spyOn(console, "warn").mockImplementation((msg, ...args) => {
     if (typeof msg === "string" && msg.includes("MUI Grid: The `")) {
@@ -72,6 +89,7 @@ beforeAll(() => {
   });
 });
 
+// Test the full app integration: Header, Home content, Footer newsletter
 test("full app integration: Header, Home content, Footer newsletter", async () => {
   render(
     <AuthContext.Provider

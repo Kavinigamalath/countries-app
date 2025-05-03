@@ -4,6 +4,9 @@ import CountryCard from "../components/CountryCard";
 import { AuthContext } from "../contexts/AuthContext";
 import { MemoryRouter } from "react-router-dom";
 
+// Mocking the Firebase module to prevent actual API calls
+jest.mock("../firebase");
+
 // A mock country object to pass into the CountryCard component
 const mockCountry = {
   cca3: "ABC",
@@ -15,22 +18,22 @@ const mockCountry = {
 };
 
 test("CountryCard renders correctly with provided country", () => {
-  // ─── Arrange ────────────────────────────────────────────────────────────────
-  // Wrap CountryCard in both AuthContext (for favorites) and MemoryRouter (for <Link>).
-  // We stub out addFavorite/removeFavorite since we’re only checking render output.
+  
   render(
+
+    // Provide a mock AuthContext with user and favorite management functions
     <AuthContext.Provider value={{
-      user: { favorites: [] },    // no initial favorites
-      addFavorite: jest.fn(),      // stub function
-      removeFavorite: jest.fn()    // stub function
+      user: { favorites: [] },    
+      addFavorite: jest.fn(), 
+      removeFavorite: jest.fn() 
     }}>
+      {/* Wrap the CountryCard component with MemoryRouter for routing context */}
       <MemoryRouter>
         <CountryCard country={mockCountry} />
       </MemoryRouter>
     </AuthContext.Provider>
   );
 
-  // ─── Act & Assert ─────────────────────────────────────────────────────────
   // Check that the country’s common name appears
   expect(screen.getByText("Testland")).toBeInTheDocument();
 

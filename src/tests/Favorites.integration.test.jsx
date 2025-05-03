@@ -5,6 +5,10 @@ import { AuthContext } from "../contexts/AuthContext";
 import * as useFetchHook from "../hooks/useFetch";
 import { MemoryRouter } from "react-router-dom";
 
+// Mocking the Firebase module to prevent actual API calls
+jest.mock("../firebase");
+
+// Mocking the useFetch hook to return a specific value
 jest.spyOn(useFetchHook, "default").mockReturnValue({
   data: [
     { cca3: "USA", name: { common: "USA" }, flags: { svg: "" }, population:0, region:"", capital:[], languages:{}, currencies:{}, timezones:[], area:0, independent:false, borders:[] }
@@ -13,8 +17,10 @@ jest.spyOn(useFetchHook, "default").mockReturnValue({
   error: null
 });
 
+
 test("Favorites redirects if not logged in, else shows cards", () => {
-  // 1) no user → Navigate should swallow, nothing renders
+  
+  // Without user (not logged in)
   render(
     <AuthContext.Provider value={{ user: null }}>
       <MemoryRouter initialEntries={["/favorites"]}>
@@ -24,7 +30,7 @@ test("Favorites redirects if not logged in, else shows cards", () => {
   );
   expect(screen.queryByText(/You haven’t added any favorites/)).toBeNull();
 
-  // 2) With user but no favorites
+  // With user but no favorites
   render(
     <AuthContext.Provider value={{ user: { favorites: [] } }}>
       <MemoryRouter>
@@ -34,7 +40,7 @@ test("Favorites redirects if not logged in, else shows cards", () => {
   );
   expect(screen.getByText(/haven’t added any favorites/i)).toBeInTheDocument();
 
-  // 3) With user and one favorite
+  // With user and one favorite
   render(
     <AuthContext.Provider value={{ user: { favorites: ["USA"] } }}>
       <MemoryRouter>
