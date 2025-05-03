@@ -1,9 +1,5 @@
 import React from "react";
 
-// No-op (stub) router components/hooks for testing purposes:
-// These implementations let you render components that expect
-// react-router APIs without pulling in the real router.
-
 export const MemoryRouter = ({ children }) => 
   // Simply render children as-is, ignoring any routing logic
   <>{children}</>;
