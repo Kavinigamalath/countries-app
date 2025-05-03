@@ -46,7 +46,7 @@ _Deployed via Cloudflare Pages (connected to GitHub)_
 - **Frontend**: React (functional components & hooks)  
 - **Routing**: React Router v6  
 - **HTTP Client**: Axios  
-- **Styling**: Tailwind CSS v3  
+- **Styling**: Tailwind CSS v3 & Material-UI  
 - **Testing**: Jest & React Testing Library  
 - **Build Tool**: Vite  
 - **Version Control**: Git (Classroom & personal remotes)  
@@ -61,8 +61,17 @@ or
   ```bash
   git clone https://github.com/SE1020-IT2070-OOP-DSA-25/af-2-Kavinigamalath
    ```
-
-2. **Install Dependencies**:
+2. **create .env file*:
+  ```bash
+VITE_FIREBASE_API_KEY= Your_FIREBASE_API_KEY
+VITE_FIREBASE_AUTH_DOMAIN=Your_FIREBASE_AUTH_DOMAIN
+VITE_FIREBASE_PROJECT_ID=Your_FIREBASE_PROJECT_ID
+VITE_FIREBASE_STORAGE_BUCKET=Your_FIREBASE_STORAGE_BUCKET
+VITE_FIREBASE_MESSAGING_SENDER_ID=Your_FIREBASE_MESSAGING_SENDER_ID
+VITE_FIREBASE_APP_ID=Your_FIREBASE_APP_ID
+VITE_FIREBASE_MEASUREMENT_ID=Your_FIREBASE_MEASUREMENT_ID
+   ```
+3. **Install Dependencies**:
    ```bash
    npm install
    ```
