@@ -1,48 +1,111 @@
-import React, { createContext, useState, useEffect } from "react"; // Import React, createContext for context API, and hooks
+// src/contexts/AuthContext.jsx
+import React, { createContext, useEffect, useState } from "react";
 
-export const AuthContext = createContext(null); // Create a context for authentication with default value null
+// Firebase imports for authentication and Firestore database
+import { auth, db, provider } from "../firebase";
 
-export function AuthProvider({ children }) { // Define provider component to wrap app and supply auth state
-  const [user, setUser] = useState(() => { // Initialize user state from localStorage, lazy initial state
-    const saved = localStorage.getItem("countriesAppUser"); // Retrieve saved user JSON string
-    return saved ? JSON.parse(saved) : null; // Parse JSON into object or use null if not found
-  });
+// Firebase imports for authentication and Firestore database
+import {
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged,
+  deleteUser,
+  reauthenticateWithPopup,
+} from "firebase/auth";
 
-  useEffect(() => { // Side effect: sync user state back to localStorage whenever user changes
-    localStorage.setItem("countriesAppUser", JSON.stringify(user)); // Serialize user object to JSON and save
-  }, [user]); // Dependency array: run effect on mount and whenever `user` updates
+// Firestore imports for document operations
+import {
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  deleteDoc,
+} from "firebase/firestore";
 
-  const login = (username, password) => { // Function to log in a user (stubbed)
-    // In a real app, you’d call your backend here.
-    if (username && password) { // Basic check: both fields provided
-      setUser({ name: username, favorites: [] }); // Set user object with name and empty favorites
-      return true; // Indicate login success
+// Create a context for authentication
+export const AuthContext = createContext(null);
+
+// AuthProvider component to manage authentication state and actions
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true);
+
+  // Load user favorites from Firestore
+  const loadFavorites = async (uid) => {
+    const ref = doc(db, "users", uid);
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      return snap.data().favorites || [];
+    } else {
+      await setDoc(ref, { favorites: [] });
+      return [];
     }
-    return false; // Indicate login failure
   };
 
-  const addFavorite = (code) => { // Add a country code to the user's favorites
-    if (user && !user.favorites.includes(code)) { // Only if user exists and code not already favorited
-      setUser({ ...user, favorites: [...user.favorites, code] }); // Append code to favorites array
+  // Listen for authentication state changes
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        const favorites = await loadFavorites(firebaseUser.uid);
+        // Set user state with uid, displayName, and favorites
+        setUser({ uid: firebaseUser.uid, name: firebaseUser.displayName, favorites });
+      } else {
+        setUser(null);
+      }
+      setLoadingUser(false);
+    });
+    return () => unsub();
+  }, []);
+
+  // Login and logout functions using Firebase authentication
+  const login = () => signInWithPopup(auth, provider);
+  const logout = () => signOut(auth);
+
+  // Add and remove favorites in Firestore
+  const addFavorite = async (code) => {
+    if (!user) return;
+    const ref = doc(db, "users", user.uid);
+    await updateDoc(ref, { favorites: arrayUnion(code) });
+    setUser((u) => ({ ...u, favorites: [...u.favorites, code] }));
+  };
+
+  // Remove favorite from Firestore and update user state
+  const removeFavorite = async (code) => {
+    if (!user) return;
+    const ref = doc(db, "users", user.uid);
+    await updateDoc(ref, { favorites: arrayRemove(code) });
+    setUser((u) => ({
+      ...u,
+      favorites: u.favorites.filter((c) => c !== code),
+    }));
+  };
+
+  // Delete user account and associated Firestore data
+  const deleteAccount = async () => {
+    if (!auth.currentUser) throw new Error("User not logged in");
+    try {
+      await reauthenticateWithPopup(auth.currentUser, provider); // Ask Google login again
+      const uid = auth.currentUser.uid;
+      await deleteDoc(doc(db, "users", uid));                    // Delete Firestore data
+      await deleteUser(auth.currentUser);                        // Delete Firebase Auth user
+      setUser(null);
+    } catch (err) {
+      console.error("Account deletion failed:", err);
+      throw err;
     }
   };
 
-  const removeFavorite = (code) => { // Remove a country code from user's favorites
-    if (user) { // Only if user exists
-      setUser({ 
-        ...user, 
-        favorites: user.favorites.filter(c => c !== code), // Filter out the given code
-      });
-    }
-  };
-  
-  const logout = () => setUser(null); // Clear the user state to log out
-
+  // Provide user state and functions to children components
   return (
-    <AuthContext.Provider 
-      value={{ user, login, logout, addFavorite, removeFavorite }} // Expose state and actions
-    >
-      {children} {/* Render child components within this provider */}
+
+    // AuthContext.Provider to share authentication state and functions
+    <AuthContext.Provider value={{ user, login, logout, addFavorite, removeFavorite,loadingUser,deleteAccount  }}>
+
+      {/* Render children components */}
+      {children}
+  
     </AuthContext.Provider>
   );
 }

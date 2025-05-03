@@ -4,14 +4,17 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import * as useFetchHook from "../hooks/useFetch";
 import Home from "../pages/Home";
 
-// ─── 1) Mock out static images ─────────────────────────────────────────────
+// Mocking the Firebase module to prevent actual API calls
+jest.mock("../firebase");
+
+//  Mock out static images 
 jest.mock("../assets/services/service1.png", () => "s1.png");
 jest.mock("../assets/services/service2.png", () => "s2.png");
 jest.mock("../assets/services/service3.png", () => "s3.png");
 jest.mock("../assets/services/service4.png", () => "s4.png");
 jest.mock("../assets/services/service5.png", () => "s5.png");
 
-// ─── 2) Stub heavy sub-components ─────────────────────────────────────────
+// Stub heavy sub-components to speed up tests
 jest.mock(
   "../components/SpotlightCarousel",
   () => ({ images, interval }) => (
@@ -32,7 +35,7 @@ jest.mock(
   )
 );
 
-// ─── 3) Prepare fake country list ──────────────────────────────────────────
+// Prepare fake country list for testing
 const mockCountries = [
   {
     cca3: "USA",
@@ -82,14 +85,14 @@ afterEach(() => {
 test("Home integration: renders carousel, all country cards, and filters by search", async () => {
   render(<Home />);
 
-  // 1) Carousel stub appears with the correct image count
+  // Carousel stub appears with the correct image count
   expect(screen.getByTestId("carousel")).toHaveTextContent("CAROUSEL (5 images)");
 
-  // 2) Both country cards render
+  // Both country cards render
   expect(await screen.findByText("United States")).toBeInTheDocument();
   expect(screen.getByText("France")).toBeInTheDocument();
 
-  // 3) Typing into the search box filters the displayed cards
+  // Typing into the search box filters the displayed cards
   const searchInput = screen.getByPlaceholderText(/Search for a country/i);
   fireEvent.change(searchInput, { target: { value: "France" } });
 

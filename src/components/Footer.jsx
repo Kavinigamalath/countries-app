@@ -1,5 +1,7 @@
-// src/components/Footer.jsx
+// Footer component for the Country Explorer app
 import React, { useState } from "react";
+
+// Import Material-UI components and icons
 import {
   Box,
   Container,
@@ -12,6 +14,8 @@ import {
   Divider,
   useTheme
 } from "@mui/material";
+
+// Import icons for social media links
 import {
   GitHub as GitHubIcon,
   LinkedIn as LinkedInIcon,
@@ -34,6 +38,7 @@ const SECTIONS = [
     ],
   },
   {
+    
     title: "Resources",
     links: [
       { label: "REST Countries API", href: "https://restcountries.com" },
@@ -44,6 +49,7 @@ const SECTIONS = [
   },
 ];
 
+// Define social media links with icons and URLs
 const SOCIAL_LINKS = [
   { icon: GitHubIcon, label: "GitHub", href: "https://github.com/kavinigamalath" },
   { icon: LinkedInIcon, label: "LinkedIn", href: "https://linkedin.com/in/kavinigamalath" },
@@ -189,6 +195,7 @@ export default function Footer() {
             gap: 2,
           }}
         >
+          {/* Legal links */}
           <Typography variant="caption" sx={{ opacity: 0.75 }}>
             © {new Date().getFullYear()} Country Explorer. All rights reserved.{" "}
             <Link href="/privacy" color="inherit" underline="hover" sx={{ mx: 1 }}>

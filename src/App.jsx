@@ -1,17 +1,20 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+
+// Importing components and pages for routing
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import CountryDetail from "./pages/CountryDetail";
 import Login from "./pages/Login";
 import Favorites from "./pages/Favorites";
+import DeleteAccount from "./pages/DeleteAccount";
 import Footer from "./components/Footer";
 
 export default function App() {
   return (
-    // Wraps the entire app in authentication context, providing
-    // user info, login/logout functions, and favorites state
+
+    // Wraps the entire app in authentication context, providing user state and actions
     <AuthProvider>
       {/* Flex column to allow header, main content, and footer layout */}
       <div className="min-h-screen flex flex-col">
@@ -30,6 +33,9 @@ export default function App() {
 
             {/* Protected or user‐specific favorites page */}
             <Route path="/favorites" element={<Favorites />} />
+
+            {/* Protected delete account page */}
+            <Route path="/delete-account" element={<DeleteAccount />} />
 
             {/* Home page listing all countries */}
             <Route path="/" element={<Home />} />

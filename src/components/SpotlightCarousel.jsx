@@ -1,24 +1,12 @@
-// src/components/SpotlightCarousel.jsx
+// Description: A responsive image carousel component that displays a spotlight image with two previews on either side. It auto-advances through the images and allows manual navigation with arrows.
+import React, { useState, useEffect, useCallback } from "react";      
+import { Box, IconButton, useTheme } from "@mui/material";            
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";        
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";      
 
-/**
- * SpotlightCarousel
- * -----------------
- * Displays 5 images in a row: two small previews on the left, a large spotlight in the center,
- * and two small previews on the right. Auto-advances every `interval` ms, and users can
- * manually navigate with arrows or by clicking any preview.
- *
- * Props:
- * - images: string[]      // array of image URLs
- * - interval: number      // ms between auto-advances (default 20000)
- */
-
-import React, { useState, useEffect, useCallback } from "react";      // Import React and hooks
-import { Box, IconButton, useTheme } from "@mui/material";            // Import MUI components
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";        // Import left arrow icon
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";      // Import right arrow icon
-
-export default function SpotlightCarousel({ images, interval = 4000 }) { // Define component with props and default interval
-  const theme = useTheme();                                           // Access MUI theme for styling
+// Description: A responsive image carousel component that displays a spotlight image with two previews on either side. It auto-advances through the images and allows manual navigation with arrows.
+export default function SpotlightCarousel({ images, interval = 4000 }) { 
+  const theme = useTheme();                                           
   const [current, setCurrent] = useState(0);                          // State for the current spotlight index
 
   // Advance to the next image, wrapping back to start
@@ -48,18 +36,19 @@ export default function SpotlightCarousel({ images, interval = 4000 }) { // Defi
   ];
 
   return (
+    // Main container for the carousel
     <Box
-      component="section"                                            // Semantic container
+      component="section"                                            
       sx={{
-        position: "relative",                                        // Parent for absolute arrows
-        width: "100%",                                               // Full width
-        display: "flex",                                             // Arrange slots in a row
-        alignItems: "center",                                        // Vertically center contents
-        justifyContent: "center",                                    // Horizontally center contents
-        overflow: "hidden",                                          // Hide overflowing parts
-        gap: 2,                                                      // Space between slots
-        mb: 4,                                                       // Margin bottom
-        height: { xs: 200, md: 300 },                               // Responsive height
+        position: "relative",                                        
+        width: "100%",                                               
+        display: "flex",                                             
+        alignItems: "center",                                        
+        justifyContent: "center",                                    
+        overflow: "hidden",                                          
+        gap: 2,                                                      
+        mb: 4,                                                       
+        height: { xs: 200, md: 300 },                               
       }}
     >
       {/* Left navigation arrow */}
@@ -76,7 +65,7 @@ export default function SpotlightCarousel({ images, interval = 4000 }) { // Defi
           opacity: 0.7,                                              // Less emphasis
         }}
       >
-        <ChevronLeftIcon />                                         {/* Render left arrow icon */}
+        <ChevronLeftIcon />                                         
       </IconButton>
 
       {/* Render the five image slots */}
@@ -120,7 +109,7 @@ export default function SpotlightCarousel({ images, interval = 4000 }) { // Defi
           opacity: 0.7,                                              // Less emphasis
         }}
       >
-        <ChevronRightIcon />                                        {/* Render right arrow icon */}
+        <ChevronRightIcon />                                        
       </IconButton>
     </Box>
   );

@@ -1,52 +1,59 @@
-// src/pages/Home.jsx
+// Description: Home page component for displaying country data and services
+import React, { useState, useMemo } from "react";             
+import { Link } from "react-router-dom";                     
+import useFetch from "../hooks/useFetch";                    
+import { getAll } from "../api/restCountries";               
+import CountryCard from "../components/CountryCard";          
+import SpotlightCarousel from "../components/SpotlightCarousel"; 
+import FilterDrawer from "../components/FilterDrawer"; 
 
-import React, { useState, useMemo } from "react";             // React and hooks for state and memoization
-import { Link } from "react-router-dom";                     // Link for client-side navigation
-import useFetch from "../hooks/useFetch";                    // Custom hook to fetch data
-import { getAll } from "../api/restCountries";               // API call to fetch all countries
-import CountryCard from "../components/CountryCard";          // Component to display individual country
-import SpotlightCarousel from "../components/SpotlightCarousel"; // Hero carousel component
-import FilterDrawer from "../components/FilterDrawer";        // Side drawer for filtering options
-
-import s1 from "../assets/services/service1.png";            // Service images for carousel
+// Importing service images for the carousel
+import s1 from "../assets/services/service1.png";            
 import s2 from "../assets/services/service2.png";
 import s3 from "../assets/services/service3.png";
 import s4 from "../assets/services/service4.png";
 import s5 from "../assets/services/service5.png";
 
+// Importing MUI components and icons for UI elements
 import {
   AppBar, Toolbar, Typography, IconButton,
   Autocomplete, TextField, Drawer,
   Box, Pagination, Skeleton,
   useTheme, Tooltip, Stack,
-} from "@mui/material";                                      // MUI components for UI layout and interactivity
-import FilterListIcon from "@mui/icons-material/FilterList"; // Icon for filter button
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew"; // Back arrow icon
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";   // Favorites icon
-import SearchIcon from "@mui/icons-material/Search";         // Search icon
-import Masonry from "@mui/lab/Masonry";                      // Masonry layout for grid
+} from "@mui/material";
+
+// MUI components for UI layout and interactivity
+import FilterListIcon from "@mui/icons-material/FilterList"; 
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"; 
+import SearchIcon from "@mui/icons-material/Search"; 
+import Masonry from "@mui/lab/Masonry";  
 
 const PAGE_SIZE = 24;                                        // Number of items per page
 const serviceImages = [s1, s2, s3, s4, s5];                  // Images array for carousel
 
+// Main Home component
 export default function Home() {
-  const theme = useTheme();                                  // Access MUI theme for styling
-  const { data: all, loading, error } = useFetch(getAll);    // Fetch all countries, track loading/error
+  const theme = useTheme();                                  
+  const { data: all, loading, error } = useFetch(getAll);   
 
-  // UI state
-  const [openFilters, setOpenFilters] = useState(false);     // Whether filter drawer is open
-  const [search, setSearch] = useState("");                  // Search input state
-  const [region, setRegion] = useState("All");               // Selected region filter
-  const [language, setLanguage] = useState("All");           // Selected language filter
-  const [page, setPage] = useState(1);                       // Current pagination page
+  // State variables for managing filters and pagination
+  const [openFilters, setOpenFilters] = useState(false);  
+  const [search, setSearch] = useState("");                 
+  const [region, setRegion] = useState("All");       
+  const [language, setLanguage] = useState("All");        
+  const [page, setPage] = useState(1);      
 
   // Derive unique subregions from countries data
   const subregions = useMemo(
     () =>
+
+      // Create a Set to store unique subregions
       Array.from(
         new Set(
           all
+            // Map through countries to get subregions
             ?.map((c) => c.subregion)
+            // Filter out undefined or empty subregions
             .filter((sr) => sr && sr !== "")
         )
       ).sort(),
@@ -151,6 +158,7 @@ export default function Home() {
             }}
           >
             {[
+              // Displaying various statistics about countries
               ["Countries", all?.length || 0],
               ["Regions", regions.length],
               ["Subregions", subregions.length],
@@ -165,6 +173,8 @@ export default function Home() {
               ],
               ["Currencies", currencies.length],
             ].map(([label, value], i) => (
+
+              // Each stat is displayed in a box with a background and shadow
               <Box
                 key={i}
                 sx={{
@@ -174,6 +184,7 @@ export default function Home() {
                   p: 2,
                 }}
               >
+                {/* Stat value and label */}
                 <Typography variant="h6" fontWeight={700}>
                   {value}
                 </Typography>
@@ -209,6 +220,7 @@ export default function Home() {
           overflow: "hidden",
         }}
       >
+        {/* Spotlight carousel for displaying service images */}
         <SpotlightCarousel images={serviceImages} interval={4000} />
       </Box>
 
@@ -220,7 +232,8 @@ export default function Home() {
           borderRadius: "16px 16px 0 0",
           overflow: "hidden",
         }}
-      >
+      > 
+        {/* AppBar with toolbar for header and filters */}
         <Toolbar
           sx={{
             flexDirection: { xs: "column", sm: "row" },
@@ -230,6 +243,7 @@ export default function Home() {
             py: { xs: 1, sm: 0 },
           }}
         >
+          {/* Logo and title */}
           <Typography
             variant="h6"
             sx={{
@@ -241,6 +255,7 @@ export default function Home() {
             <b>Country Explorer</b>
           </Typography>
 
+          {/* Search input and filter buttons */} 
           <Box
             sx={{
               display: "flex",
@@ -333,7 +348,7 @@ export default function Home() {
         sx={{
           maxWidth: 1280,                 // Constrain max width
           mx: "auto",                     // Center horizontally
-          px: { xs: 1, sm: 2, md: 4 },    // Padding X by breakpoint
+          px: { xs: 1, sm: 2, md: 4 },    
           pt: 4,
           pb: 8,
           bgcolor: theme.palette.primary.main + "AA",

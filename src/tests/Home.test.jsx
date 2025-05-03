@@ -1,26 +1,29 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-// 1) Stub react-router-dom so <Link> just becomes <a>
+// Mocking the Firebase module to prevent actual API calls
+jest.mock("../firebase");
+
+// Stub react-router-dom so <Link> just becomes <a>
 jest.mock("react-router-dom", () => ({
   __esModule: true,
   Link: ({ children, ...props }) => <a {...props}>{children}</a>,
 }));
 
-// 2) Stub your data-fetching hook to return an empty array immediately
+// Stub your data-fetching hook to return an empty array immediately
 jest.mock("../hooks/useFetch", () => ({
   __esModule: true,
   default: () => ({ data: [], loading: false, error: null }),
 }));
 
-// 3) Prevent Jest from trying to parse PNGs
+// Prevent Jest from trying to parse PNGs
 jest.mock("../assets/services/service1.png", () => "s1.png");
 jest.mock("../assets/services/service2.png", () => "s2.png");
 jest.mock("../assets/services/service3.png", () => "s3.png");
 jest.mock("../assets/services/service4.png", () => "s4.png");
 jest.mock("../assets/services/service5.png", () => "s5.png");
 
-// 4) Stub out the three child components with minimal JSX
+//Stub out the three child components with minimal JSX
 jest.mock(
   "../components/SpotlightCarousel",
   () => ({ __esModule: true, default: () => <div data-testid="carousel">CAROUSEL</div> })
