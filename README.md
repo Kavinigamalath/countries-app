@@ -144,11 +144,16 @@ _Deployed via Cloudflare Pages (connected to GitHub)_
 - `GET /alpha/{code}` – detail view by country code  
 
 ### Challenges & Resolutions
-
+- **CORS errors when calling REST Countries API in development**: Solved by using vite.config.js with proper proxy or directly calling HTTPS endpoints in the client.
+- **Difficulty managing user sessions across refresh and routing**: Used onAuthStateChanged() from Firebase Auth to persist login state and load favorites on app load.
+- **Google Sign-In failing on deployed domain (Cloudflare Pages)**: Added the domain to Firebase Auth..Authentication..Sign-in Method..Authorized domains.
+- **Slow API response time for large /all endpoint**: Added loading spinners and optimized rendering using React memoization and conditional rendering.
+- **Issues with FireStore document structure (overwrites)**: Solved by using document paths like favorites/{uid} and ensuring .set() with { merge: true }.
 - **Tailwind Setup**: Required `postcss.config.js` and correct purge globs to remove unused styles.  
 - **React Router in Tests**: Used polyfill for `TextEncoder` and mocked `react-router-dom` to fix hook-related test errors.  
 - **Language Filter**: Used a `Set` and `useMemo` to extract unique languages from nested API responses.  
-- **Favorites Persistence**: User-selected favorite countries are stored and retrieved using `Firebase Firestore`, ensuring persistent access across sessions.  
+- **Favorites Persistence**: User-selected favorite countries are stored and retrieved using `Firebase Firestore`, ensuring persistent access across sessions.
+- 
 
 ---
 
