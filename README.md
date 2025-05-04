@@ -153,7 +153,6 @@ _Deployed via Cloudflare Pages (connected to GitHub)_
 - **React Router in Tests**: Used polyfill for `TextEncoder` and mocked `react-router-dom` to fix hook-related test errors.  
 - **Language Filter**: Used a `Set` and `useMemo` to extract unique languages from nested API responses.  
 - **Favorites Persistence**: User-selected favorite countries are stored and retrieved using `Firebase Firestore`, ensuring persistent access across sessions.
-- 
 
 ---
 
