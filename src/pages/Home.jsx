@@ -90,7 +90,7 @@ export default function Home() {
     return all.filter((c) => {
       const nameMatch = c.name.common
         .toLowerCase()
-        .includes(search.toLowerCase());
+        .startsWith(search.toLowerCase());
       const regionMatch = region === "All" || c.region === region;
       const langMatch =
         language === "All" ||
