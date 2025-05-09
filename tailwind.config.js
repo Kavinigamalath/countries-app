@@ -8,7 +8,9 @@ module.exports = {
   ],
   theme: {
     extend: {
-      // Extend or override default theme values here (colors, spacing, fonts, etc.)
+       animation: {
+      'bounce-slow': 'bounce 3s infinite',
+    },
     }
   },
   // Register any Tailwind CSS plugins (e.g., forms, typography) here
