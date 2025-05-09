@@ -16,13 +16,15 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import MapIcon from "@mui/icons-material/Map";                                  
 import FlagIcon from "@mui/icons-material/Flag";                                
 import BorderAllIcon from "@mui/icons-material/BorderAll";
+import { getAll } from "../api/restCountries";
 
 
 // Main component for displaying country details
 export default function CountryDetail() {
   const { code } = useParams();                                                
   const { data, loading, error } = useFetch(getByCode, code);                  
-  const { user, addFavorite, removeFavorite } = useContext(AuthContext);       
+  const { user, addFavorite, removeFavorite } = useContext(AuthContext); 
+  const { data: allCountries } = useFetch(getAll);       
 
   // Show loading state while fetching
   if (loading) return <p className="text-center text-lg py-20">Loading…</p>;
@@ -46,7 +48,13 @@ export default function CountryDetail() {
     area,
     independent,
     borders,
+    latlng,
   } = country;
+
+  const codeToName = {};
+  allCountries?.forEach(c => {
+    codeToName[c.cca3] = c.name.common;
+  });
 
   return (
     <div className="min-h-screen bg-white/60 backdrop-blur-lg font-sans rounded-lg shrink-0">
@@ -104,6 +112,15 @@ export default function CountryDetail() {
               {isFav ? "★ Remove from Favorites" : "☆ Add to Favorites"}         {/* Button label */}
             </button>
           )}
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${latlng?.[0]},${latlng?.[1]}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`w-full block text-center py-3 rounded-lg text-lg font-semibold shadow focus:outline-none focus:ring-2 focus:ring-offset-2 transition
+              bg-green-500 hover:bg-green-600 text-white focus:ring-green-300`}
+          >
+            View on Map
+          </a>
         </section>
 
         {/* Right section: detailed stats */}
@@ -136,7 +153,30 @@ export default function CountryDetail() {
           <StatItem icon={<AccessTimeIcon />} label="Timezones" value={timezones?.join(", ") || "—"} />
           <StatItem icon={<MapIcon />} label="Area" value={`${area?.toLocaleString()} km²`} />
           <StatItem icon={<FlagIcon />} label="Independent" value={independent ? "Yes" : "No"} />
-          <StatItem icon={<BorderAllIcon />} label="Borders" value={borders?.length ? borders.join(", ") : "None"} />
+          <StatItem
+            icon={<BorderAllIcon />}
+            label="Borders"
+            value={
+              borders?.length ? (
+                <span className="flex flex-wrap gap-2">
+                  {borders.map((code, i) => (
+                    <span key={code}>
+                      <Link
+                        to={`/country/${code}`}
+                        className="text-black-600 hover:underline font-medium"
+                      >
+                        {codeToName[code] || code}
+                      </Link>
+                      {i < borders.length - 1 && <span>,</span>}
+                    </span>
+                  ))}
+                </span>
+              ) : (
+                "None"
+              )
+            }
+          />
+
         </section>
       </main>
     </div>
