@@ -9,7 +9,7 @@ A React frontend application consuming the [REST Countries API](https://restcoun
 
 This app is deployed on Cloudflare Pages:
 
-👉 [https://countries-app-ahb.pages.dev](https://countries-app-ahb.pages.dev)
+[https://countries-app-ahb.pages.dev](https://countries-app-ahb.pages.dev)
 
 _Deployed via Cloudflare Pages (connected to GitHub)_  
 
@@ -129,7 +129,7 @@ Once deployed, your site will be available at the URL provided by your hosting s
 
 This app is deployed on Cloudflare Pages:
 
-👉 [https://countries-app-ahb.pages.dev](https://countries-app-ahb.pages.dev)
+[https://countries-app-ahb.pages.dev](https://countries-app-ahb.pages.dev)
 
 _Deployed via Cloudflare Pages (connected to GitHub)_  
 ---
@@ -160,14 +160,14 @@ _Deployed via Cloudflare Pages (connected to GitHub)_
 
 | Criterion                                | How It’s Met                                                                                       |
 |------------------------------------------|----------------------------------------------------------------------------------------------------|
-| 1. Functionality & Correctness (8 M)     | ✔ All features implemented, no runtime errors, functional country list, search, and detail views. |
-| 2. API Integration & Data Handling (2 M) | ✔ Used 4 endpoints; parsed and displayed key data (name, region, flag, etc.).                     |
-| 3. Session Management (2 M)              | ✔ handled using Firebase Authentication with `Google Sign-In`, and user favorites are persistently stored in `Firebase Firestore`.                      |
-| 4. Design & Usability (4 M)              | ✔ Clean, responsive UI with Tailwind and  Material-UI; mobile-first grid layout and accessible components.         |
-| 5. Code Quality & Best Practices (4 M)   | ✔ Functional components, hooks, modular structure, and meaningful Git commit history.             |
-| 6. Documentation & Reporting (2 M)       | ✔ Detailed README with instructions and brief technical report.                                   |
-| 7. Testing (2 M)                         | ✔ Unit and integration tests for key views and flows.                                             |
+| 1. Functionality & Correctness (8 M)     |  All features implemented, no runtime errors, functional country list, search, and detail views. |
+| 2. API Integration & Data Handling (2 M) |  Used 4 endpoints; parsed and displayed key data (name, region, flag, etc.).                     |
+| 3. Session Management (2 M)              |  handled using Firebase Authentication with `Google Sign-In`, and user favorites are persistently stored in `Firebase Firestore`.                      |
+| 4. Design & Usability (4 M)              |  Clean, responsive UI with Tailwind and  Material-UI; mobile-first grid layout and accessible components.         |
+| 5. Code Quality & Best Practices (4 M)   |  Functional components, hooks, modular structure, and meaningful Git commit history.             |
+| 6. Documentation & Reporting (2 M)       |  Detailed README with instructions and brief technical report.                                   |
+| 7. Testing (2 M)                         |  Unit and integration tests for key views and flows.                                             |
 
 ---
 
-Thank you for reviewing! Feel free to explore the code, run the tests, and view the live demo.
+Thank you for reviewing! Feel free to view the code, run the tests, and view the live demo.
