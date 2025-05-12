@@ -22,7 +22,6 @@ _Deployed via Cloudflare Pages (connected to GitHub)_
 - [Testing](#testing)
 - [Deployment](#deployment)
 - [Brief Report](#brief-report)
-- [Fulfillment of Marking Criteria](#fulfillment-of-marking-criteria)
 
 ---
 
