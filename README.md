@@ -1,10 +1,8 @@
 ### Name: Kavini Gamalath
-### Student Number: IT22190598
-### Semester: Year 03 Semester 01  (2025)
 
 # REST Countries Application
 
-A React frontend application consuming the [REST Countries API](https://restcountries.com/), built as part of SE3040 – Application Frameworks (Assignment 02) at SLIIT.
+A React frontend application consuming the [REST Countries API](https://restcountries.com/).
 ## Live Demo
 
 This app is deployed on Cloudflare Pages:
@@ -153,20 +151,6 @@ _Deployed via Cloudflare Pages (connected to GitHub)_
 - **React Router in Tests**: Used polyfill for `TextEncoder` and mocked `react-router-dom` to fix hook-related test errors.  
 - **Language Filter**: Used a `Set` and `useMemo` to extract unique languages from nested API responses.  
 - **Favorites Persistence**: User-selected favorite countries are stored and retrieved using `Firebase Firestore`, ensuring persistent access across sessions.
-
----
-
-## Fulfillment of Marking Criteria
-
-| Criterion                                | How It’s Met                                                                                       |
-|------------------------------------------|----------------------------------------------------------------------------------------------------|
-| 1. Functionality & Correctness (8 M)     |  All features implemented, no runtime errors, functional country list, search, and detail views. |
-| 2. API Integration & Data Handling (2 M) |  Used 4 endpoints; parsed and displayed key data (name, region, flag, etc.).                     |
-| 3. Session Management (2 M)              |  handled using Firebase Authentication with `Google Sign-In`, and user favorites are persistently stored in `Firebase Firestore`.                      |
-| 4. Design & Usability (4 M)              |  Clean, responsive UI with Tailwind and  Material-UI; mobile-first grid layout and accessible components.         |
-| 5. Code Quality & Best Practices (4 M)   |  Functional components, hooks, modular structure, and meaningful Git commit history.             |
-| 6. Documentation & Reporting (2 M)       |  Detailed README with instructions and brief technical report.                                   |
-| 7. Testing (2 M)                         |  Unit and integration tests for key views and flows.                                             |
 
 ---
 
