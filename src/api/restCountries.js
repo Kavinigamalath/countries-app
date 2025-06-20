@@ -9,7 +9,7 @@ const api = axios.create({
 const selectedFields = "name,capital,region,subregion,population,area,flags,languages,currencies,borders";
 // Fetch all countries data
 export const getAll = () => 
-  api.get("/all"); // GET https://restcountries.com/v3.1/all
+  api.get(`/all?fields=${selectedFields}`); // GET https://restcountries.com/v3.1/all?fields=${selectedFields}
 
 // Fetch countries matching a given name (partial or full)
 export const getByName = (name) => 
