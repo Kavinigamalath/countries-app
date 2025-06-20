@@ -1,6 +1,6 @@
 // Description: Home page component for displaying country data and services
-import React, { useState, useMemo } from "react";             
-import { Link } from "react-router-dom";                     
+import React, { useState, useMemo } from "react";          
+import { useSearchParams, Link } from "react-router-dom";                     
 import useFetch from "../hooks/useFetch";                    
 import { getAll } from "../api/restCountries";               
 import CountryCard from "../components/CountryCard";          
@@ -38,10 +38,11 @@ export default function Home() {
 
   // State variables for managing filters and pagination
   const [openFilters, setOpenFilters] = useState(false);  
-  const [search, setSearch] = useState("");                 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get("search") || "";                 
   const [region, setRegion] = useState("All");       
   const [language, setLanguage] = useState("All");        
-  const [page, setPage] = useState(1);      
+  const page = parseInt(searchParams.get("page") || "1", 10); // get page from URL    
 
   // Derive unique subregions from countries data
   const subregions = useMemo(
@@ -271,9 +272,10 @@ export default function Home() {
               freeSolo
               options={[]}
               onInputChange={(_, v) => {
-                setSearch(v);
-                setPage(1);
+                setSearchParams({ search: v,page: "1" });
+                
               }}
+              inputValue={search} 
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -387,9 +389,14 @@ export default function Home() {
                 <Pagination
                   count={pageCount}
                   page={page}
-                  onChange={(_, v) => setPage(v)}
-                  color="primary"
-                />
+                  onChange={(_, v) => {
+                  setSearchParams({
+                    search,
+                    page: v.toString(), // update URL page param
+                  });
+                }}
+                color="primary"
+              />
               </Box>
             )}
           </>

@@ -89,10 +89,9 @@ export default function Footer() {
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={6}>
+        <Grid container spacing={6} columns={{ xs: 12, sm: 12, md: 12 }}>
           {/* About Section */}
-          <Grid item xs={12} md={3}>
-            {/* App name and description */}
+          <Grid sx={{ gridColumn: { xs: "span 12", sm: "span 6", md: "span 3" } }}>
             <Typography variant="h6" gutterBottom sx={{ fontWeight: 700 }}>
               Country Explorer
             </Typography>
@@ -102,9 +101,9 @@ export default function Footer() {
             </Typography>
           </Grid>
 
-          {/* Map over SECTIONS to render link columns */}
+          {/* Link sections */}
           {SECTIONS.map((section, i) => (
-            <Grid item xs={12} sm={6} md={3} key={i}>
+            <Grid key={i} sx={{ gridColumn: { xs: 'span 12', sm: 'span 6', md: 'span 3' } }}>
               <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 600 }}>
                 {section.title}
               </Typography>
@@ -124,13 +123,12 @@ export default function Footer() {
             </Grid>
           ))}
 
-          {/* Newsletter signup & social icons */}
-          <Grid item xs={12} md={3}>
+          {/* Newsletter and social section */}
+          <Grid sx={{ gridColumn: { xs: "span 12", sm: "span 12", md: "span 3" } }}>
             <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 600 }}>
               Stay Updated
             </Typography>
 
-            {/* Toggle between input form and thank-you text */}
             {subscribed ? (
               <Typography>🎉 Thanks for subscribing!</Typography>
             ) : (
@@ -160,7 +158,6 @@ export default function Footer() {
               </Box>
             )}
 
-            {/* Render social media buttons */}
             <Box sx={{ display: "flex", gap: 1 }}>
               {SOCIAL_LINKS.map(({ icon: Icon, label, href }) => (
                 <IconButton

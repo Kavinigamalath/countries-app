@@ -6,7 +6,8 @@ const api = axios.create({
   timeout: 10000,                             // 10-second timeout for all requests
 });
 // Specify up to 10 fields to avoid 400 error
-const selectedFields = "name,capital,region,subregion,population,area,flags,languages,currencies,borders";
+const selectedFields = "cca3,name,capital,region,subregion,population,area,flags,languages,currencies";
+
 // Fetch all countries data
 export const getAll = () => 
   api.get(`/all?fields=${selectedFields}`); // GET https://restcountries.com/v3.1/all?fields=${selectedFields}

@@ -20,6 +20,21 @@ jest.mock("../assets/services/service5.png", () => "s5.png");
 
 // Stub heavy child components to speed up tests
 
+jest.mock("react-router-dom", () => {
+  const original = jest.requireActual("react-router-dom");
+  return {
+    ...original,
+    useSearchParams: () => {
+      // Mimic the tuple [URLSearchParams, setSearchParams]
+      const params = new URLSearchParams();
+      return [
+        params,
+        jest.fn(), // setSearchParams mock
+      ];
+    },
+  };
+});
+
 jest.mock("../firebase", () => ({
   auth: {},
   provider: {},
