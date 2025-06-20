@@ -5,7 +5,8 @@ const api = axios.create({
   baseURL: "https://restcountries.com/v3.1", // Base URL for the REST Countries v3.1 API
   timeout: 10000,                             // 10-second timeout for all requests
 });
-
+// Specify up to 10 fields to avoid 400 error
+const selectedFields = "name,capital,region,subregion,population,area,flags,languages,currencies,borders";
 // Fetch all countries data
 export const getAll = () => 
   api.get("/all"); // GET https://restcountries.com/v3.1/all
